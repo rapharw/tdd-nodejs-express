@@ -1,26 +1,15 @@
-# TDD NODEJS EXPRESS
+## TDD NODEJS EXPRESS
 
-### This is a NodeJS application that provides exercises in a gradative way to improve your test skills using TDD practice
+#### This is a NodeJS application that provides exercises in a gradative way to improve your test skills using TDD practice
 
-<br>
-
-## Content
+### Content
 
 - [Motivation](#motivation)
 - [Technologies](#technologies)
 - [VSCode Extensions](#vscode-extensions)
 - [Main Structure](#main-structure)
-- [Setup and how to run locally](#setup-and-how-to-run-locally)
-- [(Quickly) How it works](<#(quickly)-how-the-project-works>)
-- [(TLDR) How it works](<#(tldr)-how-it-works>)
-  - [Transaction Control](#transaction-control)
-  - [Security](#security-with-helmet)
-  - [OpenAPI (Swagger)](<#openapi-(swagger)>)
-  - [Error Handler](#error-handler)
 
-<br>
-
-## Motivation
+### Motivation
 
 Many developers are little lazy when the subject it's about tests. Maybe they don't REALLY know about the importance of this, or they just don't know how to create good tests. Or even worse, they don't know how to start build a test nicely.
 
@@ -30,9 +19,7 @@ We'll follow this simple image that represents the cycle of TDD and see how it w
 
 ![exercise-one](./screenshots/tdd.GIF)
 
-<br>
-
-## Technologies
+### Technologies
 
 - axios
 - consign
@@ -43,9 +30,7 @@ We'll follow this simple image that represents the cycle of TDD and see how it w
 - supertest (dev)
 - @types/jest (dev)
 
-<br>
-
-## VSCode Extensions
+### VSCode Extensions
 
 - ESLint
 - JavaScript (ES6) code snippets
@@ -54,44 +39,35 @@ We'll follow this simple image that represents the cycle of TDD and see how it w
 
 >**IT'S VERY RECOMMENDED INSTALL THIS EXTENSIONS TO HAVE A BETTER EXPERIENCE**
 
-<br>
-
-## Main Structure
+### Main Structure
 
 >**TO DO**
 
-<br>
+## Let's Start !
 
-# Let's Start !
-
-## The context
+### The context
 We'll create services with integration to IBGE API, a public institute of Brazil. The API that we'll use treats about informations of locations (states and regions).
 
-#### BASE_URL (The base url of API)
+##### BASE_URL (The base url of API)
 https://servicodados.ibge.gov.br/api/v1/localidades
 
-#### ESTADOS BY UF (To see the full list, call GET <a>/estados</a>)
+##### ESTADOS BY UF (To see the full list, call GET <a>/estados</a>)
 GET <a>/estados/{UF}</a>
 
-#### MUNICIPIOS (The regions of a state)
+##### MUNICIPIOS (The regions of a state)
 GET <a>/estados/{UF}/municipios</a>
-
-<br>
 
 > The BASE_URL it's already created with Axios plugin. Don't worry about that and focus on the below specifications.
 
-**[See more ESTATOS](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-UFs-estadosUFGet)**
+##### [See more ESTATOS](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-UFs-estadosUFGet)
 
-**[See more MUNICIPIOS](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-Municipios-estadosUFMunicipiosGet)**
+##### [See more MUNICIPIOS](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-Municipios-estadosUFMunicipiosGet)**
 
-
-<br>
-
-## Exercise One
+### Exercise One
 
 Create a service that will integrate with **/estados/{UF}** and than transform the default response of service to return on the below format:
 
-### **Example**
+#### **Example**
 **GET <a>{base_url}/estados/RJ</a>**
 
 **Default Response**
@@ -116,18 +92,21 @@ Create a service that will integrate with **/estados/{UF}** and than transform t
 }
 ```
 
-> NOTE: Beyond create the service, we need to create a transformer for the requirement proposed.
+> NOTE: <br>
+> You have to:
+> * Create a function with the transformer
+> * Create a client/service that integrate with API, and then call the above transformer to manipulate the response correctly
 
-## WRITING THE TEST
+### WRITING THE TEST
 
-### Step 1
+#### Step 1
 
 Create a test file named **estados.result.transformer.test.js** on the **tests** folder.
 
 ![exercise-one](./screenshots/exercise-one-01.GIF)
 
 
-### Step 2
+#### Step 2
 
 **Describe the Test Suite**
 ```javascript
@@ -137,7 +116,7 @@ describe('Estados Result Transformer', async() => {
 });
 ```
 
-### Step 3
+#### Step 3
 
 **Create the test**
 ```javascript
@@ -150,7 +129,7 @@ describe('Estados Result Transformer', async() => {
 });
 ```
 
-### Step 4
+#### Step 4
 
 **Create a "*mock value*" that represents the real return of IBGE API ESTADOS**
 ```javascript
@@ -172,10 +151,9 @@ describe('Estados Result Transformer', async() => {
 
     });
 });
-
 ```
 
-### Step 5
+#### Step 5
 
 **Invoke a function (function, method, class, service... whatever you want) that will be return the expected transformation of response**
 
@@ -204,15 +182,12 @@ describe('Estados Result Transformer', async() => {
 
 
     });
-
 });
-
 ```
 
-### Step 6
+#### Step 6
 
 **We need to create the assertions to validate the expected result of what we want.**
-
 
 ```javascript
 describe('Estados Result Transformer', async() => {
@@ -240,16 +215,14 @@ describe('Estados Result Transformer', async() => {
         expect(result.regiao).toBe('Sudeste');
 
     });
-
 });
-
 ```
 
-### *We expect that "result" variable represents the new formated json containing the attributes "estado", "uf", "regiao" with the specification on the above "Exercise One"*
+#### *We expect that "result" variable represents the new formated json containing the attributes "estado", "uf", "regiao" with the specification on the above "Exercise One"*
 
-### **AT THIS POINT, WE CREATE THE STEP "1. Write Test" OF THE TDD CYCLE. NOW, WE GO ENTER ON THE STEP 2.**
+#### **AT THIS POINT, WE CREATE THE STEP "1. Write Test" OF THE TDD CYCLE. NOW, WE GO ENTER ON THE STEP 2.**
 
-## RUNNING THE TEST "2. Test Fails" 
+### RUNNING THE TEST "2. Test Fails" 
 
 If you install the above extensions recommended, this panel will show the described test (and all tests created by you).
 
@@ -259,7 +232,7 @@ Click on the left side bar icon to show the panel.
 
 **RUN IT on the play icon.**
 
-### **WOW! ERROR! OF COURSE.** 
+#### **WOW! ERROR! OF COURSE.** 
 
 ![exercise-one-test-01](./screenshots/exercise-one-test-01.GIF)
 
@@ -276,19 +249,20 @@ describe('Estados Result Transformer', async() => {
 
 });
 ```
+
 **RUN THE TEST AGAIN**
 
-### **ERROR! ONCE AGAIN!** 
+#### **ERROR! ONCE AGAIN!** 
 
 ![exercise-one-test-02](./screenshots/exercise-one-test-02.GIF)
 
 >But it's another error. The module that we required doesn't exist.
 
-### **Let's create this module. BUT with no logic, for now.**
+#### **Let's create this module. BUT with no logic, for now.**
 
-## NOW WE START TO ENTER THE STEP 3 "Write Code"
+### NOW WE START TO ENTER THE STEP 3 "Write Code"
 
-### To see how it works gradatively, we'll iterate on the step's 2 and 3. Write some code. Test this code. And repeat again.
+#### To see how it works gradatively, we'll iterate on the step's 2 and 3. Write some code. Test this code. And repeat again.
 
 ![exercise-one-test-03](./screenshots/exercise-one-test-03.GIF)
 
@@ -308,7 +282,7 @@ module.exports = ibgeEstadosResultTransformer;
 
 **RUN THE TEST ONE MORE TIME**
 
-### **OPS! WAIT A MINUTE!** 
+#### **OPS! WAIT A MINUTE!** 
 
 ![exercise-one-test-04](./screenshots/exercise-one-test-04.GIF)
 
@@ -344,13 +318,13 @@ module.exports = ibgeEstadosResultTransformer;
 
 **IT'S NECESSARY, SINCE WE HAVE CREATED ASYNC FUNCTIONS. SO FINALLY, RUN THE FINAL TEST**
 
-## *AND VOILÀ ! ! !*
+### *AND VOILÀ ! ! !*
 
 ![exercise-one-test-05](./screenshots/exercise-one-test-05.GIF)
 
 **THE GREEN LIGHT SHOW US THAT THE TEST PASS SUCCESSFULLY**
 
-### *AT THIS POINT, WE ARE ON THE STEP 4 "Test Passes".*
+#### *AT THIS POINT, WE ARE ON THE STEP 4 "Test Passes".*
 
 >To check if it's all good, try to change the line 23 to this:<br>
 
@@ -360,7 +334,7 @@ expect(result.estado).toBe('Rio de Janeiroooo');
 
 **The test will fail.**
 
-## IF YOU FEEL IT'S NECESSARY TO REFACTOR YOUR LOGIC CODE, AND THE TEST CODE, DO IT! IT'S IMPORTANT MAINTAINING A CLEAN CODE*
+### IF YOU FEEL IT'S NECESSARY TO REFACTOR YOUR LOGIC CODE, AND THE TEST CODE, DO IT! IT'S IMPORTANT MAINTAINING A CLEAN CODE*
 
 
 > TO DO
