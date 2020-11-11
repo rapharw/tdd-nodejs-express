@@ -1,13 +1,14 @@
 ## TDD NODEJS EXPRESS
 
-#### This is a NodeJS application that provides exercises in a gradative way to improve your test skills using TDD practice
+#### This is a NodeJS application that provide an exercise in a gradative way to improve your test skills using TDD practice.
 
-### Content
+### Table of Content
 
 - [Motivation](#motivation)
 - [Technologies](#technologies)
 - [VSCode Extensions](#vscode-extensions)
-- [Main Structure](#main-structure)
+- [Installation]()
+
 
 ### Motivation
 
@@ -89,7 +90,7 @@ We'll use the IBGE API `https://servicodados.ibge.gov.br/api/v1/localidades/esta
 ><br>
 ><br>
 ><br>
-> I'm sure you answered: Transformer!
+> I'm sure you answered: **Transformer!**
 
 ### **DEEP DIVING**
 
@@ -118,7 +119,7 @@ describe('Estados Result Transformer', async() => {
 ```javascript
 describe('Estados Result Transformer', async() => {
 
-    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
+    it('should return {"value": "State (UF) / Region (Region abbrev.)"}', async() => {
 
     });
 
@@ -129,90 +130,49 @@ describe('Estados Result Transformer', async() => {
 
 **Create a "*mock value*" that represents the real return of IBGE API ESTADOS**
 ```javascript
-describe('Estados Result Transformer', async() => {
-
-    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
-
-        // GET {base_url}/estados/RJ
-        const defaultJsonResponse = {
-            "id": 33,
-            "sigla": "RJ",
-            "nome": "Rio de Janeiro",
-            "regiao": {
-                "id": 3,
-                "sigla": "SE",
-                "nome": "Sudeste"
-            }
-        };
-
-    });
-});
+// GET {base_url}/estados/RJ
+const defaultJsonResponse = {
+    "id": 33,
+    "sigla": "RJ",
+    "nome": "Rio de Janeiro",
+    "regiao": {
+        "id": 3,
+        "sigla": "SE",
+        "nome": "Sudeste"
+    }
+};
 ```
 
 #### Step 5
 
-**Invoke a function (function, method, class, service... whatever you want) that will be return the expected transformation of response**
+**Invoke a function (function, method, class, service... whatever you want) that will be return the result**
 
 >***Yes! This function still not exists. Yet. And that is the trick.***
 
 ```javascript
-describe('Estados Result Transformer', async() => {
-
-    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
-
-        // GET {base_url}/estados/RJ
-        const defaultJsonResponse = {
-            "id": 33,
-            "sigla": "RJ",
-            "nome": "Rio de Janeiro",
-            "regiao": {
-                "id": 3,
-                "sigla": "SE",
-                "nome": "Sudeste"
-            }
-        };
-
-
-        //this service doesn't exists yet
-        const result = ibgeEstadosResultTransformer.execute(defaultJsonResponse);
-
-
-    });
-});
+//this service doesn't exists yet
+const actual = ibgeEstadosResultTransformer.execute(defaultJsonResponse);
 ```
-
 #### Step 6
 
-**We need to create the assertions to validate the expected result of what we want.**
+**Now we can create an expected object that represents WHAT WE EXPECT as a success result**
 
 ```javascript
-describe('Estados Result Transformer', async() => {
-
-    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
-
-        // GET {base_url}/estados/RJ
-        const defaultJsonResponse = {
-            "id": 33,
-            "sigla": "RJ",
-            "nome": "Rio de Janeiro",
-            "regiao": {
-                "id": 3,
-                "sigla": "SE",
-                "nome": "Sudeste"
-            }
-        };
-
-        //this service doesn't exists yet
-        const result = ibgeEstadosResultTransformer.execute(defaultJsonResponse);
-
-        //assertions
-        expect(result.value).toBe('Rio de Janeiro (RJ) / Sudeste (SE)');
-
-    });
-});
+const expected = {
+    value: "Rio de Janeiro (RJ) / Sudeste (SE)"
+};
 ```
 
-#### *We expect that "result" variable represents the new formated json containing the format of the above specification*
+#### Step 7
+
+**We need to create the assertion to validate the result (actual) of what we want (expected).**
+
+```javascript
+//assertions
+expect(actual).toStrictEqual(expected);
+```
+
+#### *We expect that "actual" variable represents the new formated json containing the format of the above specification*
 
 #### **AT THIS POINT, WE CREATE THE STEP "1. Write Test" OF THE TDD CYCLE. NOW, WE GO ENTER ON THE STEP 2.**
 
@@ -336,45 +296,74 @@ expect(result.value).toBe('lorem');
 ### IF YOU FEEL IT'S NECESSARY TO REFACTOR YOUR LOGIC CODE, AND THE TEST CODE, DO IT! IT'S IMPORTANT MAINTAINING A CLEAN CODE*
 
 
-### 2- WRITING THE TEST FOR THE API CLIENT INTEGRATION
+#### The complete TEST file content
 
-#### Step 1
-
-Follow the above steps to create a test file named **estados.client.integration.test.js** on the **tests** folder.
-
-
-#### Step 2
-
-**Describe the Test Suite**
 ```javascript
+const ibgeEstadosResultTransformer = require('../functions/ibge.estados.result.transformer');
+
 describe('Estados Result Transformer', async() => {
 
-    
+    it('should return {"value": "State (UF) / Region (Region abbrev.)"}', async() => {
+
+        // GET {base_url}/estados/RJ
+        const defaultJsonResponse = {
+            "id": 33,
+            "sigla": "RJ",
+            "nome": "Rio de Janeiro",
+            "regiao": {
+                "id": 3,
+                "sigla": "SE",
+                "nome": "Sudeste"
+            }
+        };
+        
+        const actual = await ibgeEstadosResultTransformer.execute(defaultJsonResponse);
+
+        const expected = {
+            value: "Rio de Janeiro (RJ) / Sudeste (SE)"
+        };
+
+        //assertions
+        expect(actual).toStrictEqual(expected);
+
+    });
+
 });
 ```
 
 
-> TO DO
 
-3: |Retornar o somatorio de estados agrupados por regiao|
-## EXEMPLO ##
+### 2- DO YOURSELF
 
-[
-    {
-        "regiao": "Sudeste",
-        "qtdEstados": 999
-    },
-    {
-        "regiao": "Norte",
-        "qtdEstados": 111
-    }
-]
+**We can explore whatever we want to test. So we should try many options:**
+1. Validate the integration with IBGE API
+2. Validate the Json schema with the IBGE API to confirm if something on the schema is changed.
+3. Validate the content of Json based on an UF
+4. Validate an express route that we'll use to integrate with the IBGE API and return the result transformed
+
+If you want to explore the items 1 and 4, you can use this bellow tricks:
 
 
-> TO DO
-4: |Dada uma UF, retornar o nome do estado dentro de um array. cada posicao do array deve conter uma letra|
+For the item 1:
 
-## EXEMPLO ##
-GET /endpoint/RJ
+To create an integration with IBGE, check the `client.js` file on the `middleware` folder.
 
-["r", "i", "o", " ", "d", "e", " ", "j", "a", "n", "e", "i", "r", "o" ]
+
+For the item 4:
+
+To test a route with express, use something like this:
+
+```javascript
+const request = require('supertest')
+const app = require('../config/server/express')
+
+describe('', () => {
+  
+  it('should return', async () => {
+    const res = await request(app).get('/your_route');
+
+    expect(res.statusCode).toEqual(200);
+    //also validate the result
+  })
+})
+```

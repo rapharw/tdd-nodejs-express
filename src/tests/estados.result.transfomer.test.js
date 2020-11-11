@@ -2,7 +2,7 @@ const ibgeEstadosResultTransformer = require('../functions/ibge.estados.result.t
 
 describe('Estados Result Transformer', async() => {
 
-    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
+    it('should return {"value": "State (UF) / Region (Region abbrev.)"}', async() => {
 
         // GET {base_url}/estados/RJ
         const defaultJsonResponse = {
@@ -16,10 +16,14 @@ describe('Estados Result Transformer', async() => {
             }
         };
         
-        const result = await ibgeEstadosResultTransformer.execute(defaultJsonResponse);
+        const actual = await ibgeEstadosResultTransformer.execute(defaultJsonResponse);
+
+        const expected = {
+            value: "Rio de Janeiro (RJ) / Sudeste (SE)"
+        };
 
         //assertions
-        expect(result.value).toBe('Rio de Janeiro (RJ) / Sudeste (SE)');
+        expect(actual).toStrictEqual(expected);
 
     });
 

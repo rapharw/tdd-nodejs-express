@@ -11,7 +11,9 @@ const ibgeEstadosResultTransformer = {
         const regiao = ibgeEstadoResponseJson.regiao.nome;
         const regiaoSigla = ibgeEstadoResponseJson.regiao.sigla;
 
-        return `${estado} (${uf}) / ${regiao} (${regiaoSigla})`;
+        newJsonTransformed.value = `${estado} (${uf}) / ${regiao} (${regiaoSigla})`;
+
+        return newJsonTransformed;
     }
 
 };
