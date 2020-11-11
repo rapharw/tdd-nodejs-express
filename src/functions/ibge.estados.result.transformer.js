@@ -4,11 +4,14 @@ const ibgeEstadosResultTransformer = {
 
         const newJsonTransformed = {};
 
-        newJsonTransformed.estado = ibgeEstadoResponseJson.nome;
-        newJsonTransformed.uf = ibgeEstadoResponseJson.sigla;
-        newJsonTransformed.regiao = ibgeEstadoResponseJson.regiao.nome;
+        //ex: 'Rio de Janeiro (RJ) / Sudeste (SE)'
 
-        return newJsonTransformed;
+        const estado = ibgeEstadoResponseJson.nome;
+        const uf = ibgeEstadoResponseJson.sigla;
+        const regiao = ibgeEstadoResponseJson.regiao.nome;
+        const regiaoSigla = ibgeEstadoResponseJson.regiao.sigla;
+
+        return `${estado} (${uf}) / ${regiao} (${regiaoSigla})`;
     }
 
 };

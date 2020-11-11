@@ -45,32 +45,17 @@ We'll follow this simple image that represents the cycle of TDD and see how it w
 
 ## Let's Start !
 
-### The context
-We'll create services with integration to IBGE API, a public institute of Brazil. The API that we'll use treats about informations of locations (states and regions).
+### The Context
+A client asked us to create an service exposed as an API to let us know which region is located in a Brazilian state. Our service must receive the UF (Federative Unit) and return the exactly value "Rio de Janeiro (RJ) - Sudeste".
 
-##### BASE_URL (The base url of API)
-https://servicodados.ibge.gov.br/api/v1/localidades
+### The Solution
 
-##### ESTADOS BY UF (To see the full list, call GET <a>/estados</a>)
-GET <a>/estados/{UF}</a>
-
-##### MUNICIPIOS (The regions of a state)
-GET <a>/estados/{UF}/municipios</a>
-
-> The BASE_URL it's already created with Axios plugin. Don't worry about that and focus on the below specifications.
-
-##### [See more ESTATOS](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-UFs-estadosUFGet)
-
-##### [See more MUNICIPIOS](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-Municipios-estadosUFMunicipiosGet)**
-
-### Exercise One
-
-Create a service that will integrate with **/estados/{UF}** and than transform the default response of service to return on the below format:
+We'll use the IBGE API `https://servicodados.ibge.gov.br/api/v1/localidades/estados/{UF}` to return the information of a UF. After that, we need to convert the IBGE API response to the specification above.
 
 #### **Example**
-**GET <a>{base_url}/estados/RJ</a>**
+**GET <a>https://servicodados.ibge.gov.br/api/v1/localidades/estados/RJ</a>**
 
-**Default Response**
+**IBGE API Response (States)**
 ```json
 {
     "id": 33,
@@ -83,21 +68,32 @@ Create a service that will integrate with **/estados/{UF}** and than transform t
     }
 }
 ```
-**The new format response that must be transformed**
+**Our service MUST RETURN**
 ```json
 {
-    "estado": "Rio de Janeiro",
-    "uf": "RJ",
-    "regiao": "Sudeste"
+    "value": "Rio de Janeiro (RJ) / Sudeste (SE)"
 }
 ```
 
-> NOTE: <br>
-> You have to:
-> * Create a function with the transformer
-> * Create a client/service that integrate with API, and then call the above transformer to manipulate the response correctly
+##### [To see more](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-UFs-estadosUFGet)
 
-### WRITING THE TEST
+#### **NOTE:**
+> When we look at the describe of the Solution, automatically we think "well, i need to create a client that integrates with the IBGE API and after that transform the result on a new one". Yes, that it's correct. Then we would do:
+> 1. Create a client that integrates with API
+> 2. Create a function with the logic of transformer/converter of IBGE API response
+> 3. Create a module that integrates the items 1 and 2. So, when we use this module, we call the API with ***item 1*** and then transform the result with ***item 2***
+>
+> **So far so good.**
+>
+> But what is the real value, or in other words, what is the business rules here that we need to **pay attention**?
+><br>
+><br>
+><br>
+> I'm sure you answered: Transformer!
+
+### **DEEP DIVING**
+
+### 1- WRITING THE TEST FOR THE TRANSFORMER
 
 #### Step 1
 
@@ -122,7 +118,7 @@ describe('Estados Result Transformer', async() => {
 ```javascript
 describe('Estados Result Transformer', async() => {
 
-    it('should return a json with only "estado", "uf", "regiao"', async() => {
+    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
 
     });
 
@@ -135,7 +131,7 @@ describe('Estados Result Transformer', async() => {
 ```javascript
 describe('Estados Result Transformer', async() => {
 
-    it('should transform defaultJsonResponse to return a expectedJson with only "estado", "uf", "regiao"', async() => {
+    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
 
         // GET {base_url}/estados/RJ
         const defaultJsonResponse = {
@@ -162,7 +158,7 @@ describe('Estados Result Transformer', async() => {
 ```javascript
 describe('Estados Result Transformer', async() => {
 
-    it('should transform defaultJsonResponse to return a expectedJson with only "estado", "uf", "regiao"', async() => {
+    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
 
         // GET {base_url}/estados/RJ
         const defaultJsonResponse = {
@@ -192,7 +188,7 @@ describe('Estados Result Transformer', async() => {
 ```javascript
 describe('Estados Result Transformer', async() => {
 
-    it('should transform defaultJsonResponse to return a expectedJson with only "estado", "uf", "regiao"', async() => {
+    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
 
         // GET {base_url}/estados/RJ
         const defaultJsonResponse = {
@@ -210,15 +206,13 @@ describe('Estados Result Transformer', async() => {
         const result = ibgeEstadosResultTransformer.execute(defaultJsonResponse);
 
         //assertions
-        expect(result.estado).toBe('Rio de Janeiro');
-        expect(result.uf).toBe('RJ');
-        expect(result.regiao).toBe('Sudeste');
+        expect(result.value).toBe('Rio de Janeiro (RJ) / Sudeste (SE)');
 
     });
 });
 ```
 
-#### *We expect that "result" variable represents the new formated json containing the attributes "estado", "uf", "regiao" with the specification on the above "Exercise One"*
+#### *We expect that "result" variable represents the new formated json containing the format of the above specification*
 
 #### **AT THIS POINT, WE CREATE THE STEP "1. Write Test" OF THE TDD CYCLE. NOW, WE GO ENTER ON THE STEP 2.**
 
@@ -300,13 +294,18 @@ const ibgeEstadosResultTransformer = {
 
         const newJsonTransformed = {};
 
-        newJsonTransformed.estado = ibgeEstadoResponseJson.nome;
-        newJsonTransformed.uf = ibgeEstadoResponseJson.sigla;
-        newJsonTransformed.regiao = ibgeEstadoResponseJson.regiao.nome;
+        //ex: 'Rio de Janeiro (RJ) / Sudeste (SE)'
 
-        return newJsonTransformed;
+        const estado = ibgeEstadoResponseJson.nome;
+        const uf = ibgeEstadoResponseJson.sigla;
+        const regiao = ibgeEstadoResponseJson.regiao.nome;
+        const regiaoSigla = ibgeEstadoResponseJson.regiao.sigla;
+
+        return `${estado} (${uf}) / ${regiao} (${regiaoSigla})`;
     }
+
 };
+
 module.exports = ibgeEstadosResultTransformer;
 ```
 
@@ -329,12 +328,30 @@ module.exports = ibgeEstadosResultTransformer;
 >To check if it's all good, try to change the line 23 to this:<br>
 
 ```javascript
-expect(result.estado).toBe('Rio de Janeiroooo');
+expect(result.value).toBe('lorem');
 ```
 
 **The test will fail.**
 
 ### IF YOU FEEL IT'S NECESSARY TO REFACTOR YOUR LOGIC CODE, AND THE TEST CODE, DO IT! IT'S IMPORTANT MAINTAINING A CLEAN CODE*
+
+
+### 2- WRITING THE TEST FOR THE API CLIENT INTEGRATION
+
+#### Step 1
+
+Follow the above steps to create a test file named **estados.client.integration.test.js** on the **tests** folder.
+
+
+#### Step 2
+
+**Describe the Test Suite**
+```javascript
+describe('Estados Result Transformer', async() => {
+
+    
+});
+```
 
 
 > TO DO

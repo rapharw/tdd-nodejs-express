@@ -1,8 +1,6 @@
-const ibgeEstadosResultTransformer = require('../functions/ibge.estados.result.transformer');
+describe('Estados API Client Integration Transformer', async() => {
 
-describe('Estados Result Transformer', async() => {
-
-    it('should return a json with the value "State (State abbreviation) / Region (Region abbreviation)"', async() => {
+    it('should transform defaultJsonResponse to return a expectedJson with only "estado", "uf", "regiao"', async() => {
 
         // GET {base_url}/estados/RJ
         const defaultJsonResponse = {
@@ -16,10 +14,13 @@ describe('Estados Result Transformer', async() => {
             }
         };
         
+        //this service doesn't exists yet
         const result = await ibgeEstadosResultTransformer.execute(defaultJsonResponse);
 
         //assertions
-        expect(result.value).toBe('Rio de Janeiro (RJ) / Sudeste (SE)');
+        expect(result.estado).toBe('Rio de Janeiro');
+        expect(result.uf).toBe('RJ');
+        expect(result.regiao).toBe('Sudeste');
 
     });
 
