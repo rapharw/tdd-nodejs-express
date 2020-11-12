@@ -5,9 +5,9 @@
 ### Table of Content
 
 - [Motivation](#motivation)
-- [Installation](#installation)
 - [Technologies](#technologies)
 - [VSCode Extensions](#vscode-extensions)
+- [Installation](#installation)
 - [Let's Start !](#lets-start)
     - [The context](#the-context)
     - [The solution](#the-solution)
@@ -55,6 +55,8 @@ We'll follow this simple image that represents the cycle of TDD and see how it w
 > Clone/Checkout the `main` branch
 
 > npm install
+
+> Install the above VSCode Extensions
 
 > (VSCODE) File > Preferences > Settings > In search settings, type **Jest**
 
