@@ -1,0 +1,30 @@
+{
+  "name": "tdd-nodejs-express",
+  "version": "1.0.0",
+  "description": "This is a NodeJS application that provides exercices in a gradative way to improve your TDD skills.",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rapharw/tdd-nodejs-express.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rapharw/tdd-nodejs-express/issues"
+  },
+  "homepage": "https://github.com/rapharw/tdd-nodejs-express#readme",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "consign": "^0.1.6",
+    "express": "^4.17.1",
+    "pino": "^6.7.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.15",
+    "jest": "^26.6.2",
+    "supertest": "^6.0.0"
+  }
+}
