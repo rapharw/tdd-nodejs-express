@@ -5,9 +5,14 @@
 ### Table of Content
 
 - [Motivation](#motivation)
+- [Installation](#installation)
 - [Technologies](#technologies)
 - [VSCode Extensions](#vscode-extensions)
-- [Installation]()
+- [Let's Start !](#lets-start)
+    - [The context](#the-context)
+    - [The solution](#the-solution)
+        - [Note to think](#note-to-think)
+- [Deep Diving](#deep-diving)
 
 
 ### Motivation
@@ -18,7 +23,11 @@ This guide it's for you, my dear Dev, and I hope that you leave with some skills
 
 We'll follow this simple image that represents the cycle of TDD and see how it works in the practice.
 
-![exercise-one](./screenshots/tdd.GIF)
+![tdd](./screenshots/tdd.GIF)
+
+### Installation
+
+> npm install
 
 ### Technologies
 
@@ -40,14 +49,14 @@ We'll follow this simple image that represents the cycle of TDD and see how it w
 
 >**IT'S VERY RECOMMENDED INSTALL THIS EXTENSIONS TO HAVE A BETTER EXPERIENCE**
 
-### Main Structure
-
->**TO DO**
-
 ## Let's Start !
 
 ### The Context
-A client asked us to create an service exposed as an API to let us know which region is located in a Brazilian state. Our service must receive the UF (Federative Unit) and return the exactly value "Rio de Janeiro (RJ) - Sudeste".
+A client asked us to create an service exposed as an API to let us know which region is located in a Brazilian state. Our service must receive the UF (Federative Unit) and return the exactly value bellow: 
+
+`{UF} = RJ` 
+
+`Value to return = Rio de Janeiro (RJ) / Sudeste (SE)`.
 
 ### The Solution
 
@@ -78,7 +87,7 @@ We'll use the IBGE API `https://servicodados.ibge.gov.br/api/v1/localidades/esta
 
 ##### [To see more](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-UFs-estadosUFGet)
 
-#### **NOTE:**
+#### **NOTE TO THINK**
 > When we look at the describe of the Solution, automatically we think "well, i need to create a client that integrates with the IBGE API and after that transform the result on a new one". Yes, that it's correct. Then we would do:
 > 1. Create a client that integrates with API
 > 2. Create a function with the logic of transformer/converter of IBGE API response
