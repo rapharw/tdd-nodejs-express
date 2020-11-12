@@ -13,7 +13,11 @@
     - [The solution](#the-solution)
         - [Note to think](#note-to-think)
 - [Deep Diving](#deep-diving)
-
+    - [Writing the test](#WRITING-THE-TEST)
+    - [Test Fails](#TEST-FAIL)
+    - [Writing the code](#WRITING-THE-CODE)
+    - [And Voilà](#AND-VOILÀ)
+- [Do yourself](#DO-YOURSELF)
 
 ### Motivation
 
@@ -25,9 +29,6 @@ We'll follow this simple image that represents the cycle of TDD and see how it w
 
 ![tdd](./screenshots/tdd.GIF)
 
-### Installation
-
-> npm install
 
 ### Technologies
 
@@ -48,6 +49,14 @@ We'll follow this simple image that represents the cycle of TDD and see how it w
 - Jest Test Explorer
 
 >**IT'S VERY RECOMMENDED INSTALL THIS EXTENSIONS TO HAVE A BETTER EXPERIENCE**
+
+### Installation
+
+> npm install
+
+> (VSCODE) File > Preferences > Settings > In search settings, type **Jest**
+
+![jest-config](./screenshots/jest-config.GIF)
 
 ## Let's Start !
 
@@ -103,7 +112,7 @@ We'll use the IBGE API `https://servicodados.ibge.gov.br/api/v1/localidades/esta
 
 ### **DEEP DIVING**
 
-### 1- WRITING THE TEST FOR THE TRANSFORMER
+### WRITING THE TEST
 
 #### Step 1
 
@@ -185,7 +194,7 @@ expect(actual).toStrictEqual(expected);
 
 #### **AT THIS POINT, WE CREATE THE STEP "1. Write Test" OF THE TDD CYCLE. NOW, WE GO ENTER ON THE STEP 2.**
 
-### RUNNING THE TEST "2. Test Fails" 
+### TEST FAIL
 
 If you install the above extensions recommended, this panel will show the described test (and all tests created by you).
 
@@ -223,7 +232,7 @@ describe('Estados Result Transformer', async() => {
 
 #### **Let's create this module. BUT with no logic, for now.**
 
-### NOW WE START TO ENTER THE STEP 3 "Write Code"
+### WRITING THE CODE
 
 #### To see how it works gradatively, we'll iterate on the step's 2 and 3. Write some code. Test this code. And repeat again.
 
@@ -249,12 +258,12 @@ module.exports = ibgeEstadosResultTransformer;
 
 ![exercise-one-test-04](./screenshots/exercise-one-test-04.GIF)
 
-> Now the error occurs inside our test. Look the first assertion (on the 23 line) and look the Error trace. <br>
->*"Error: expect(received).toBe(expected) // Object.is equality <br><br>
->Expected: "Rio de Janeiro"<br>
->Received: undefined"*
+> Now the error occurs inside our test. Look the assertion and look the Error trace. <br>
+> *Error: expect(received).toStrictEqual(expected) // deep equality <br><br>
+> Expected: {"value": "Rio de Janeiro (RJ) / Sudeste (SE)"}<br>
+> Received: undefined*
 
-**It's almost there. Let's create THE LOGIC OF OUR CONTEXT (on the description of Exercise One).**
+**It's almost there. Now let's create THE LOGIC OF CONTEXT OF BUSINESS RULES.**
 
 ```javascript
 const ibgeEstadosResultTransformer = {
@@ -278,15 +287,15 @@ const ibgeEstadosResultTransformer = {
 module.exports = ibgeEstadosResultTransformer;
 ```
 
-**AND BEFORE WE RUN THE TEST AGAIN, UPDATE THE 20 LINE OF OUR TEST TO INCLUDE THE "AWAIT" INSTRUCTION:**
+**AND BEFORE WE RUN THE TEST AGAIN, CHANGE THE TEST FILE TO INCLUDE THE "AWAIT" INSTRUCTION:**
 
 ```javascript
     const result = await ibgeEstadosResultTransformer.execute(defaultJsonResponse);
 ```
 
-**IT'S NECESSARY, SINCE WE HAVE CREATED ASYNC FUNCTIONS. SO FINALLY, RUN THE FINAL TEST**
+**IT'S NECESSARY, SINCE WE HAVE CREATED ASYNC FUNCTION. SO FINALLY, RUN THE FINAL TEST**
 
-### *AND VOILÀ ! ! !*
+### *AND VOILÀ*
 
 ![exercise-one-test-05](./screenshots/exercise-one-test-05.GIF)
 
@@ -302,7 +311,10 @@ expect(result.value).toBe('lorem');
 
 **The test will fail.**
 
-### IF YOU FEEL IT'S NECESSARY TO REFACTOR YOUR LOGIC CODE, AND THE TEST CODE, DO IT! IT'S IMPORTANT MAINTAINING A CLEAN CODE*
+
+### *Refactoring*
+
+##### *IF YOU FEEL IT'S NECESSARY TO REFACTOR YOUR LOGIC CODE, AND THE TEST CODE, DO IT! IT'S IMPORTANT MAINTAINING A CLEAN CODE*
 
 
 #### The complete TEST file content
@@ -342,7 +354,7 @@ describe('Estados Result Transformer', async() => {
 
 
 
-### 2- DO YOURSELF
+### DO YOURSELF
 
 **We can explore whatever we want to test. So we should try many options:**
 1. Validate the integration with IBGE API
