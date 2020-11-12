@@ -52,6 +52,8 @@ We'll follow this simple image that represents the cycle of TDD and see how it w
 
 ### Installation
 
+> Clone/Checkout the `main` branch
+
 > npm install
 
 > (VSCODE) File > Preferences > Settings > In search settings, type **Jest**
@@ -352,6 +354,7 @@ describe('Estados Result Transformer', async() => {
 });
 ```
 
+### ***Clone/Checkout the `final_result` branch to see the complete code***
 
 
 ### DO YOURSELF
