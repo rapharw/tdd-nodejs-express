@@ -74,6 +74,8 @@ We'll use the IBGE API `https://servicodados.ibge.gov.br/api/v1/localidades/esta
 #### **Example**
 **GET <a>https://servicodados.ibge.gov.br/api/v1/localidades/estados/RJ</a>**
 
+##### [To see more](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-UFs-estadosUFGet)
+
 **IBGE API Response (States)**
 ```json
 {
@@ -93,8 +95,6 @@ We'll use the IBGE API `https://servicodados.ibge.gov.br/api/v1/localidades/esta
     "value": "Rio de Janeiro (RJ) / Sudeste (SE)"
 }
 ```
-
-##### [To see more](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1#api-UFs-estadosUFGet)
 
 #### **NOTE TO THINK**
 > When we look at the describe of the Solution, automatically we think "well, i need to create a client that integrates with the IBGE API and after that transform the result on a new one". Yes, that it's correct. Then we would do:
@@ -299,11 +299,11 @@ module.exports = ibgeEstadosResultTransformer;
 
 ![exercise-one-test-05](./screenshots/exercise-one-test-05.GIF)
 
-**THE GREEN LIGHT SHOW US THAT THE TEST PASS SUCCESSFULLY**
+**THE GREEN LIGHT SHOW US THAT THE TEST PASSES SUCCESSFULLY**
 
 #### *AT THIS POINT, WE ARE ON THE STEP 4 "Test Passes".*
 
->To check if it's all good, try to change the line 23 to this:<br>
+>To check if it's all good, try to change the assertion to this:<br>
 
 ```javascript
 expect(result.value).toBe('lorem');
